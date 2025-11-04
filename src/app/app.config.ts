@@ -7,14 +7,16 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { routes } from './app.routes';
+import { treeReducer } from './store/tree/tree.reducer';
+import { TreeEffects } from './store/tree/tree.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimations(),
     provideHttpClient(),
-    provideStore(),
-    provideEffects(),
+    provideStore({ tree: treeReducer }),
+    provideEffects([TreeEffects]),
     provideStoreDevtools({ maxAge: 25 })
   ]
 };
