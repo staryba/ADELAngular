@@ -1,0 +1,64 @@
+<div class="layout-container">
+  <!-- Toolbar with ADEL logo -->
+  <mat-toolbar color="primary" class="app-toolbar">
+    <span class="app-title">ADEL</span>
+  </mat-toolbar>
+
+  <!-- Main content area -->
+  <div class="main-content">
+    <!-- Left panel: Tree view -->
+    <div class="left-panel"
+         [style.width.%]="isTreeCollapsed ? 2 : treeWidth"
+         [class.collapsed]="isTreeCollapsed">
+      <div class="panel-header">
+        <button mat-icon-button (click)="toggleTree()" class="collapse-button">
+          <mat-icon>{{ isTreeCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+        </button>
+        <span *ngIf="!isTreeCollapsed" class="panel-title">Navigation</span>
+      </div>
+      <div class="panel-content" *ngIf="!isTreeCollapsed">
+        <!-- Tree view component will go here -->
+        <p class="placeholder-text">Tree View</p>
+      </div>
+    </div>
+
+    <!-- Vertical resizer -->
+    <div class="vertical-resizer"
+         (mousedown)="onTreeResize($event)"
+         *ngIf="!isTreeCollapsed">
+    </div>
+
+    <!-- Right panel: Table view and Info panel -->
+    <div class="right-panel"
+         [style.width.%]="isTreeCollapsed ? 98 : (100 - treeWidth)">
+      <div class="right-panel-content">
+        <!-- Top: Table view -->
+        <div class="table-panel" [style.height.%]="tableHeight">
+          <div class="panel-header">
+            <span class="panel-title">Entities</span>
+          </div>
+          <div class="panel-content">
+            <!-- Table component will go here -->
+            <p class="placeholder-text">Table View</p>
+          </div>
+        </div>
+
+        <!-- Horizontal resizer -->
+        <div class="horizontal-resizer"
+             (mousedown)="onTableResize($event)">
+        </div>
+
+        <!-- Bottom: Info panel -->
+        <div class="info-panel" [style.height.%]="100 - tableHeight">
+          <div class="panel-header">
+            <span class="panel-title">Information</span>
+          </div>
+          <div class="panel-content">
+            <!-- Info component will go here -->
+            <p class="placeholder-text">System logs, entity info, validation messages, errors...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
