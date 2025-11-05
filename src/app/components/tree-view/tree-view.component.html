@@ -52,4 +52,35 @@
       <span *ngIf="node.hasChildren" class="child-count">{{ node.childCount }}</span>
     </div>
   </cdk-virtual-scroll-viewport>
+
+  <!-- Context Menu (positioned absolutely) -->
+  <div style="visibility: hidden; position: fixed;"
+       [style.left]="contextMenuPosition.x"
+       [style.top]="contextMenuPosition.y"
+       [matMenuTriggerFor]="contextMenu">
+  </div>
+
+  <mat-menu #contextMenu="matMenu">
+    <button mat-menu-item (click)="onCreateBusinessObject()">
+      <mat-icon>add</mat-icon>
+      <span>Create Business Object</span>
+    </button>
+    <button mat-menu-item (click)="onCreateProfile()">
+      <mat-icon>note_add</mat-icon>
+      <span>Create Profile</span>
+    </button>
+    <button mat-menu-item (click)="onCreateEntity()">
+      <mat-icon>post_add</mat-icon>
+      <span>Create Entity</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="onEdit()">
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button mat-menu-item (click)="onDelete()">
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </mat-menu>
 </div>

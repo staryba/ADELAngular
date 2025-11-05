@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -6,7 +6,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 
 import { TreeNode, EntityType } from '../../models/tree-node.model';
@@ -29,6 +29,8 @@ import * as TreeSelectors from '../../store/tree/tree.selectors';
   styleUrl: './tree-view.component.scss'
 })
 export class TreeViewComponent implements OnInit {
+  @ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
+
   flatNodes$: Observable<TreeNode[]>;
   selectedNodeId$: Observable<number | null>;
   loading$: Observable<boolean>;
@@ -36,6 +38,9 @@ export class TreeViewComponent implements OnInit {
 
   readonly itemSize = 36; // Height of each tree item in pixels
   readonly EntityType = EntityType;
+
+  contextMenuPosition = { x: '0px', y: '0px' };
+  selectedContextNode: TreeNode | null = null;
 
   constructor(private store: Store) {
     this.flatNodes$ = this.store.select(TreeSelectors.selectFlatNodes);
@@ -90,15 +95,43 @@ export class TreeViewComponent implements OnInit {
   onContextMenu(event: MouseEvent, node: TreeNode): void {
     event.preventDefault();
     event.stopPropagation();
-    // Trigger context menu programmatically
-    const target = event.target as HTMLElement;
-    const treeNode = target.closest('.tree-node');
-    if (treeNode) {
-      const trigger = treeNode.querySelector('[matMenuTriggerFor]') as any;
-      if (trigger && trigger._matMenuTrigger) {
-        trigger._matMenuTrigger.openMenu();
-      }
+
+    // Store the node for context menu actions
+    this.selectedContextNode = node;
+
+    // Set menu position
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+
+    // Open menu if available
+    if (this.contextMenu) {
+      this.contextMenu.openMenu();
     }
+  }
+
+  onCreateBusinessObject(): void {
+    console.log('Create Business Object for node:', this.selectedContextNode);
+    // TODO: Implement create business object
+  }
+
+  onCreateProfile(): void {
+    console.log('Create Profile for node:', this.selectedContextNode);
+    // TODO: Implement create profile
+  }
+
+  onCreateEntity(): void {
+    console.log('Create Entity for node:', this.selectedContextNode);
+    // TODO: Implement create entity
+  }
+
+  onEdit(): void {
+    console.log('Edit node:', this.selectedContextNode);
+    // TODO: Implement edit
+  }
+
+  onDelete(): void {
+    console.log('Delete node:', this.selectedContextNode);
+    // TODO: Implement delete
   }
 
   trackByNodeId(index: number, node: TreeNode): number {
