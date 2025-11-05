@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { TreeNodeDto, EntityType } from '../models/tree-node.model';
+import { EntityDetail } from '../models/entity.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,29 @@ export class EntitiesApiService {
     }
 
     return this.http.get<TreeNodeDto[]>(`${this.baseUrl}/tree-nodes`, { params });
+  }
+
+  /**
+   * Get entity details by ID
+   * @param entityId The entity ID
+   */
+  getEntityById(entityId: number): Observable<EntityDetail> {
+    return this.http.get<EntityDetail>(`${this.baseUrl}/${entityId}`);
+  }
+
+  /**
+   * Get children entities in table view format
+   * @param parentId The parent entity ID
+   */
+  getChildrenTableView(parentId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/${parentId}/children/table-view`);
+  }
+
+  /**
+   * Get entities by profile in table view format
+   * @param profileId The profile ID
+   */
+  getByProfileTableView(profileId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/by-profile/${profileId}/table-view`);
   }
 }

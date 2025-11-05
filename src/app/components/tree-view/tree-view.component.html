@@ -23,9 +23,7 @@
       [class.entity]="node.entityType === EntityType.Entity"
       [style.padding-left.px]="node.level * 20"
       (click)="selectNode(node)"
-      (contextmenu)="onContextMenu($event, node)"
-      [matMenuTriggerFor]="contextMenu"
-      #menuTrigger="matMenuTrigger">
+      (contextmenu)="onContextMenu($event, node)">
 
       <!-- Expand/collapse button -->
       <button
@@ -53,30 +51,5 @@
       <!-- Child count badge -->
       <span *ngIf="node.hasChildren" class="child-count">{{ node.childCount }}</span>
     </div>
-
-    <!-- Context menu -->
-    <mat-menu #contextMenu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>add</mat-icon>
-        <span>Create Business Object</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>note_add</mat-icon>
-        <span>Create Profile</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>post_add</mat-icon>
-        <span>Create Entity</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item>
-        <mat-icon>edit</mat-icon>
-        <span>Edit</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>delete</mat-icon>
-        <span>Delete</span>
-      </button>
-    </mat-menu>
   </cdk-virtual-scroll-viewport>
 </div>

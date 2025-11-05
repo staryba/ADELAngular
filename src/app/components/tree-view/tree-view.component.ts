@@ -89,7 +89,16 @@ export class TreeViewComponent implements OnInit {
 
   onContextMenu(event: MouseEvent, node: TreeNode): void {
     event.preventDefault();
-    // Context menu will be implemented in the template
+    event.stopPropagation();
+    // Trigger context menu programmatically
+    const target = event.target as HTMLElement;
+    const treeNode = target.closest('.tree-node');
+    if (treeNode) {
+      const trigger = treeNode.querySelector('[matMenuTriggerFor]') as any;
+      if (trigger && trigger._matMenuTrigger) {
+        trigger._matMenuTrigger.openMenu();
+      }
+    }
   }
 
   trackByNodeId(index: number, node: TreeNode): number {

@@ -5,6 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { TreeViewComponent } from '../tree-view/tree-view.component';
+import { TableViewComponent } from '../table-view/table-view.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -15,7 +16,8 @@ import { TreeViewComponent } from '../tree-view/tree-view.component';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    TreeViewComponent
+    TreeViewComponent,
+    TableViewComponent
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss'
