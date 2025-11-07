@@ -157,5 +157,10 @@ export const treeReducer = createReducer(
   on(TreeActions.deselectNode, state => ({
     ...state,
     selectedNodeId: null
+  })),
+
+  // Reset tree
+  on(TreeActions.resetTree, () => ({
+    ...initialState
   }))
 );

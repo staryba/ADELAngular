@@ -11,6 +11,7 @@ export interface EntityDetail {
   entityType: number;
   profileId: number;
   values: { [elementId: string]: ElementValue };
+  children?: EntityDetail[];
 }
 
 export interface TableViewColumn {
@@ -27,4 +28,23 @@ export interface TableViewRow {
 export interface TableViewData {
   columns: TableViewColumn[];
   rows: TableViewRow[];
+}
+
+export interface ProfileElement {
+  id: number;
+  properties: {
+    Name?: string;
+    DataType?: string;
+    PrimaryKey?: boolean;
+    OrderNumber?: number;
+    AllowNull?: boolean;
+    [key: string]: any;
+  };
+}
+
+export interface ProfileDto {
+  id: number;
+  parentEntityId: number | null;
+  elements: ProfileElement[];
+  entityCount: number;
 }

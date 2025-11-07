@@ -27,8 +27,8 @@
       </ng-container>
 
       <!-- Dynamic element columns -->
-      <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-        <ng-container *ngIf="column !== '_id' && column !== '_actions'">
+      <ng-container *ngFor="let column of displayedColumns">
+        <ng-container *ngIf="column !== '_id' && column !== '_actions'" [matColumnDef]="column">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>
             {{ columnNames[column] || column }}
           </th>

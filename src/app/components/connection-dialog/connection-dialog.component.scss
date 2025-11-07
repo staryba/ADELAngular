@@ -1,0 +1,311 @@
+.connection-dialog {
+  min-width: 600px;
+  max-width: 800px;
+
+  h2[mat-dialog-title] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 4px 4px 0 0;
+
+    .title-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  mat-dialog-content {
+    padding: 24px;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  mat-dialog-actions {
+    padding: 16px 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+}
+
+// Current Connection Info
+.current-connection-info {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border-left: 4px solid #4caf50;
+
+  .info-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-weight: 500;
+    color: #4caf50;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .info-content {
+    margin-left: 28px;
+
+    strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .info-details {
+      display: flex;
+      gap: 8px;
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 4px;
+
+      .detail-label {
+        font-weight: 500;
+        min-width: 80px;
+      }
+
+      .detail-value {
+        font-family: 'Courier New', monospace;
+        color: #333;
+      }
+    }
+  }
+}
+
+// Connections Section
+.connections-section {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+}
+
+// Add Connection Form
+.add-connection-form {
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+
+  .full-width {
+    width: 100%;
+  }
+
+  mat-form-field {
+    margin-bottom: 8px;
+  }
+
+  .test-result {
+    margin: 16px 0;
+
+    .test-result-success,
+    .test-result-error {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 4px;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .test-result-success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #4caf50;
+    }
+
+    .test-result-error {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #f44336;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 16px;
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      mat-spinner {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+// Connections List
+.connections-list {
+  padding: 0;
+
+  .connection-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 80px;
+
+    &:hover {
+      background: #f5f5f5;
+      border-color: #bdbdbd;
+      transform: translateX(4px);
+    }
+
+    &.active {
+      background: #e3f2fd;
+      border-color: #2196f3;
+      border-width: 2px;
+
+      .connection-title {
+        color: #1976d2;
+        font-weight: 500;
+      }
+    }
+
+    mat-icon[matListItemIcon] {
+      color: #9e9e9e;
+
+      &.active-icon {
+        color: #2196f3;
+      }
+    }
+
+    .connection-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 4px;
+
+      .default-chip {
+        height: 20px;
+        font-size: 11px;
+        padding: 0 8px;
+        background: #ffeb3b;
+        color: #000;
+      }
+    }
+
+    .connection-details {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 8px;
+
+      .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: #666;
+        font-family: 'Courier New', monospace;
+
+        .detail-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+          color: #999;
+        }
+      }
+    }
+
+    .connection-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #888;
+
+      .description {
+        font-style: italic;
+      }
+
+      .last-connected {
+        color: #999;
+      }
+    }
+
+    .delete-btn {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      color: #f44336;
+
+      &:hover {
+        background: rgba(244, 67, 54, 0.1);
+      }
+    }
+
+    &:hover .delete-btn {
+      opacity: 1;
+    }
+  }
+}
+
+// Empty State
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #999;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  p {
+    margin: 8px 0;
+    font-size: 16px;
+
+    &.empty-hint {
+      font-size: 13px;
+      color: #bbb;
+    }
+  }
+}
+
+// Material Overrides
+::ng-deep {
+  .mat-mdc-list-item {
+    height: auto !important;
+  }
+}

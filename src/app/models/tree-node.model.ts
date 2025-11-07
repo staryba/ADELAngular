@@ -1,7 +1,8 @@
 export enum EntityType {
   BusinessObject = 1,
   Profile = 2,
-  Entity = 3
+  Entity = 3,
+  ProfileEntity = 4
 }
 
 export enum Status {

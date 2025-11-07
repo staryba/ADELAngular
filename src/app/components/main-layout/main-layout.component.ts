@@ -4,8 +4,16 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatBadgeModule } from '@angular/material/badge';
+import { Store } from '@ngrx/store';
 import { TreeViewComponent } from '../tree-view/tree-view.component';
 import { TableViewComponent } from '../table-view/table-view.component';
+import { ConnectionDialogComponent } from '../connection-dialog/connection-dialog.component';
+import { ConnectionConfigService } from '../../services/connection-config.service';
+import { DatabaseConnection } from '../../models/database-connection.model';
+import * as TreeActions from '../../store/tree/tree.actions';
 
 @Component({
   selector: 'app-main-layout',
@@ -16,6 +24,9 @@ import { TableViewComponent } from '../table-view/table-view.component';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatBadgeModule,
     TreeViewComponent,
     TableViewComponent
   ],
@@ -26,6 +37,13 @@ export class MainLayoutComponent implements OnInit {
   treeWidth = 20; // Default 20% width
   tableHeight = 75; // Default 75% height for table view
   isTreeCollapsed = false;
+  currentConnection: DatabaseConnection | null = null;
+
+  constructor(
+    private dialog: MatDialog,
+    private connectionService: ConnectionConfigService,
+    private store: Store
+  ) {}
 
   ngOnInit() {
     // Load saved layout state from localStorage
@@ -42,6 +60,18 @@ export class MainLayoutComponent implements OnInit {
     if (savedTreeCollapsed) {
       this.isTreeCollapsed = savedTreeCollapsed === 'true';
     }
+
+    // Subscribe to current connection changes
+    this.connectionService.currentConnection$.subscribe(connection => {
+      const previousConnection = this.currentConnection;
+      this.currentConnection = connection;
+
+      // If connection changed (not initial load), reset the tree view
+      if (previousConnection && connection && previousConnection.id !== connection.id) {
+        console.log('Database connection changed, resetting tree view');
+        this.store.dispatch(TreeActions.resetTree());
+      }
+    });
   }
 
   onTreeResize(event: MouseEvent) {
@@ -90,5 +120,31 @@ export class MainLayoutComponent implements OnInit {
   toggleTree() {
     this.isTreeCollapsed = !this.isTreeCollapsed;
     localStorage.setItem('adel-tree-collapsed', this.isTreeCollapsed.toString());
+  }
+
+  openConnectionDialog() {
+    const dialogRef = this.dialog.open(ConnectionDialogComponent, {
+      width: '700px',
+      maxHeight: '90vh',
+      disableClose: false,
+      autoFocus: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.connected) {
+        // Connection changed - reload the page or refresh data
+        console.log('Connected to:', result.connection);
+        // Optionally reload the page to apply new connection
+        // window.location.reload();
+      }
+    });
+  }
+
+  getConnectionDisplayName(): string {
+    return this.currentConnection?.name || 'No Connection';
+  }
+
+  getConnectionDatabaseName(): string {
+    return this.currentConnection?.databaseName || 'N/A';
   }
 }

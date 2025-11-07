@@ -43,6 +43,13 @@ export class TreeEffects {
     )
   );
 
+  resetTree$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TreeActions.resetTree),
+      map(() => TreeActions.loadRootNodes())
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private entitiesApi: EntitiesApiService

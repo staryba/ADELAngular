@@ -54,13 +54,14 @@
   </cdk-virtual-scroll-viewport>
 
   <!-- Context Menu (positioned absolutely) -->
-  <div style="visibility: hidden; position: fixed;"
+  <div #contextMenuTrigger="matMenuTrigger"
+       style="visibility: hidden; position: fixed;"
        [style.left]="contextMenuPosition.x"
        [style.top]="contextMenuPosition.y"
        [matMenuTriggerFor]="contextMenu">
   </div>
 
-  <mat-menu #contextMenu="matMenu">
+  <mat-menu #contextMenu>
     <button mat-menu-item (click)="onCreateBusinessObject()">
       <mat-icon>add</mat-icon>
       <span>Create Business Object</span>

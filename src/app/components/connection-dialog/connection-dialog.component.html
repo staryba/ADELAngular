@@ -1,0 +1,145 @@
+<div class="connection-dialog">
+  <h2 mat-dialog-title>
+    <mat-icon class="title-icon">storage</mat-icon>
+    Database Connections
+  </h2>
+
+  <mat-dialog-content>
+    <!-- Current Connection Info -->
+    <div class="current-connection-info" *ngIf="currentConnection">
+      <div class="info-header">
+        <mat-icon>check_circle</mat-icon>
+        <span>Current Connection</span>
+      </div>
+      <div class="info-content">
+        <strong>{{ currentConnection.name }}</strong>
+        <div class="info-details">
+          <span class="detail-label">API:</span>
+          <span class="detail-value">{{ currentConnection.apiUrl }}</span>
+        </div>
+        <div class="info-details">
+          <span class="detail-label">Database:</span>
+          <span class="detail-value">{{ currentConnection.databaseName }}</span>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Saved Connections List -->
+    <div class="connections-section">
+      <div class="section-header">
+        <h3>Saved Connections</h3>
+        <button mat-icon-button color="primary" (click)="toggleAddForm()" [matTooltip]="showAddForm ? 'Cancel' : 'Add New Connection'">
+          <mat-icon>{{ showAddForm ? 'close' : 'add_circle' }}</mat-icon>
+        </button>
+      </div>
+
+      <!-- Add New Connection Form -->
+      <div class="add-connection-form" *ngIf="showAddForm">
+        <form [formGroup]="connectionForm">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Connection Name</mat-label>
+            <input matInput formControlName="name" placeholder="e.g., Production Server">
+            <mat-icon matPrefix>label</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>API URL</mat-label>
+            <input matInput formControlName="apiUrl" placeholder="http://localhost:5112/api/v1">
+            <mat-icon matPrefix>link</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Database Name</mat-label>
+            <input matInput formControlName="databaseName" placeholder="ADEL">
+            <mat-icon matPrefix>storage</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description (Optional)</mat-label>
+            <textarea matInput formControlName="description" rows="2" placeholder="Optional description"></textarea>
+            <mat-icon matPrefix>description</mat-icon>
+          </mat-form-field>
+
+          <!-- Test Result -->
+          <div class="test-result" *ngIf="testResult">
+            <div class="test-result-success" *ngIf="testResult.success">
+              <mat-icon>check_circle</mat-icon>
+              <span>{{ testResult.message }}</span>
+            </div>
+            <div class="test-result-error" *ngIf="!testResult.success">
+              <mat-icon>error</mat-icon>
+              <span>{{ testResult.message }}</span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button mat-raised-button type="button" (click)="testConnection()" [disabled]="connectionForm.invalid || testingConnection">
+              <mat-icon *ngIf="!testingConnection">wifi_tethering</mat-icon>
+              <mat-spinner *ngIf="testingConnection" diameter="20"></mat-spinner>
+              Test Connection
+            </button>
+            <button mat-raised-button color="primary" type="button" (click)="saveNewConnection()" [disabled]="connectionForm.invalid">
+              <mat-icon>save</mat-icon>
+              Save Connection
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Connections List -->
+      <mat-list class="connections-list" *ngIf="!showAddForm">
+        <mat-list-item *ngFor="let connection of savedConnections"
+                       class="connection-item"
+                       [class.active]="isCurrentConnection(connection)"
+                       (click)="selectConnection(connection)">
+          <mat-icon matListItemIcon [class.active-icon]="isCurrentConnection(connection)">
+            {{ isCurrentConnection(connection) ? 'radio_button_checked' : 'radio_button_unchecked' }}
+          </mat-icon>
+
+          <div matListItemTitle class="connection-title">
+            {{ connection.name }}
+            <mat-chip *ngIf="connection.isDefault" class="default-chip">Default</mat-chip>
+          </div>
+
+          <div matListItemLine class="connection-details">
+            <span class="detail-item">
+              <mat-icon class="detail-icon">link</mat-icon>
+              {{ connection.apiUrl }}
+            </span>
+            <span class="detail-item">
+              <mat-icon class="detail-icon">storage</mat-icon>
+              {{ connection.databaseName }}
+            </span>
+          </div>
+
+          <div matListItemLine class="connection-meta" *ngIf="connection.description || connection.lastConnected">
+            <span *ngIf="connection.description" class="description">{{ connection.description }}</span>
+            <span *ngIf="connection.lastConnected" class="last-connected">
+              Last connected: {{ formatLastConnected(connection.lastConnected) }}
+            </span>
+          </div>
+
+          <button mat-icon-button matListItemMeta
+                  *ngIf="!connection.isDefault"
+                  (click)="deleteConnection(connection, $event)"
+                  matTooltip="Delete Connection"
+                  class="delete-btn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-list-item>
+
+        <div class="empty-state" *ngIf="savedConnections.length === 0">
+          <mat-icon>cloud_off</mat-icon>
+          <p>No saved connections</p>
+          <p class="empty-hint">Click the + button above to add a new connection</p>
+        </div>
+      </mat-list>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Close</button>
+  </mat-dialog-actions>
+</div>

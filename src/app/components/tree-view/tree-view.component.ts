@@ -29,7 +29,7 @@ import * as TreeSelectors from '../../store/tree/tree.selectors';
   styleUrl: './tree-view.component.scss'
 })
 export class TreeViewComponent implements OnInit {
-  @ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
+  @ViewChild('contextMenuTrigger') contextMenuTrigger: any;
 
   flatNodes$: Observable<TreeNode[]>;
   selectedNodeId$: Observable<number | null>;
@@ -104,8 +104,8 @@ export class TreeViewComponent implements OnInit {
     this.contextMenuPosition.y = event.clientY + 'px';
 
     // Open menu if available
-    if (this.contextMenu) {
-      this.contextMenu.openMenu();
+    if (this.contextMenuTrigger) {
+      this.contextMenuTrigger.openMenu();
     }
   }
 

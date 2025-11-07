@@ -1,7 +1,26 @@
 <div class="layout-container">
-  <!-- Toolbar with ADEL logo -->
+  <!-- Toolbar with ADEL logo and connection info -->
   <mat-toolbar color="primary" class="app-toolbar">
     <span class="app-title">ADEL</span>
+
+    <span class="toolbar-spacer"></span>
+
+    <!-- Database Connection Info -->
+    <div class="connection-info" *ngIf="currentConnection">
+      <mat-icon class="connection-icon">storage</mat-icon>
+      <div class="connection-details">
+        <span class="connection-name">{{ getConnectionDisplayName() }}</span>
+        <span class="connection-db">{{ getConnectionDatabaseName() }}</span>
+      </div>
+    </div>
+
+    <!-- Connection Settings Button -->
+    <button mat-icon-button
+            (click)="openConnectionDialog()"
+            matTooltip="Database Connections"
+            class="connection-button">
+      <mat-icon>settings</mat-icon>
+    </button>
   </mat-toolbar>
 
   <!-- Main content area -->

@@ -44,3 +44,6 @@ export const selectNode = createAction(
 
 // Deselect node
 export const deselectNode = createAction('[Tree] Deselect Node');
+
+// Reset tree (clear all data and reload root nodes)
+export const resetTree = createAction('[Tree] Reset Tree');

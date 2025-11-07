@@ -3,15 +3,25 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { TreeNodeDto, EntityType } from '../models/tree-node.model';
-import { EntityDetail } from '../models/entity.model';
+import { EntityDetail, ProfileDto } from '../models/entity.model';
+import { ConnectionConfigService } from './connection-config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EntitiesApiService {
-  private readonly baseUrl = `${environment.apiUrl}/entities`;
+  constructor(
+    private http: HttpClient,
+    private connectionService: ConnectionConfigService
+  ) {}
 
-  constructor(private http: HttpClient) {}
+  private get baseUrl(): string {
+    return `${this.connectionService.getApiUrl()}/entities`;
+  }
+
+  private get profilesUrl(): string {
+    return `${this.connectionService.getApiUrl()}/profiles`;
+  }
 
   /**
    * Get tree nodes for hierarchical navigation with lazy loading
@@ -63,5 +73,15 @@ export class EntitiesApiService {
    */
   getByProfileTableView(profileId: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/by-profile/${profileId}/table-view`);
+  }
+
+  /**
+   * Get profile by ID with element definitions
+   * @param profileId The profile entity ID
+   * @param includeDeleted Include soft-deleted profiles (default: true for internal use)
+   */
+  getProfileById(profileId: number, includeDeleted: boolean = true): Observable<ProfileDto> {
+    const params = new HttpParams().set('includeDeleted', includeDeleted.toString());
+    return this.http.get<ProfileDto>(`${this.profilesUrl}/${profileId}`, { params });
   }
 }
